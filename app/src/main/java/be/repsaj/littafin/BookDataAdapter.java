@@ -62,4 +62,9 @@ class BookDataAdapter extends RecyclerView.Adapter<BookDataAdapter.BookViewHolde
         Book book = books.get(position);
         return book.getUid();
     }
+
+    public Book getBook(int position){
+        Book book = books.get(position);
+        return book;
+    }
 }

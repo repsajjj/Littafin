@@ -155,7 +155,7 @@ public class ScanBookActivity extends AppCompatActivity {
             protected void onPostExecute(final Boolean success) {
                 if (success) {
                     Toast.makeText(getApplicationContext(),"Book successfully inserted", Toast.LENGTH_SHORT).show();
-                    finish();
+                    startActivity(new Intent(getApplicationContext(),MainActivity.class));
                 } else {
                     Toast.makeText(getApplicationContext(),"Could not insert book", Toast.LENGTH_SHORT).show();
                 }

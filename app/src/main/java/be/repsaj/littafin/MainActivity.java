@@ -9,13 +9,8 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
+import android.util.Log;
 import android.view.MenuItem;
 
 import java.util.List;
@@ -56,7 +51,6 @@ public class MainActivity extends AppCompatActivity{
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        makeBookDataAdapter();
     }
 
     @Override
@@ -123,6 +117,17 @@ public class MainActivity extends AppCompatActivity{
                 mAdapter.notifyItemRemoved(position);
                 mAdapter.notifyItemRangeChanged(position, mAdapter.getItemCount());
             }
+
+            @Override
+            public void onLeftClicked(int position) {
+                Book tBook=mAdapter.getBook(position);
+                Intent intent = new Intent(getApplicationContext(),EditBookActivity.class);
+                intent.putExtra("bookId", tBook.getUid());
+                intent.putExtra("bookTitle", tBook.getTitle());
+                intent.putExtra("bookAuthor", tBook.getAuthor());
+                intent.putExtra("bookCategory", tBook.getCategory());
+                startActivity(intent);
+              }
         });
 
         ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
