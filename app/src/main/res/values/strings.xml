@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Littafin</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <!-- Strings related to MainActivity-->
+    <string name="scan_barcode_button">Scan barcode</string>
+    <string name="no_barcode_captured">No barcode captured</string>
+    <string name="barcode_error_format">"Error reading barcode: %1$s"</string>
+
+    <!-- Strings related to barcode scanner -->
+    <string name="ok">OK</string>
+    <string name="permission_camera_rationale">Access to the camera is needed for detection</string>
+    <string name="no_camera_permission">This application cannot run because it does not have the camera permission.  The application will now exit.</string>
+    <string name="low_storage_error">Face detector dependencies cannot be downloaded due to low device storage</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+</resources>
