@@ -18,8 +18,9 @@ public class AddBookActivity extends AppCompatActivity {
         String title = ((EditText) findViewById(R.id.txtTitle)).getText().toString();
         String author = ((EditText) findViewById(R.id.txtAuthor)).getText().toString();
         String category = ((EditText) findViewById(R.id.txtCategory)).getText().toString();
+        String cover ="";
 
-        Book newBook = new Book(title, author, category);
+        Book newBook = new Book(title, author, category, cover);
         AddBookTask addBookTask = new AddBookTask(newBook);
         addBookTask.execute((Void) null);
     }

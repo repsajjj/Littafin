@@ -13,8 +13,8 @@ public class Book {
     private String title;
     @ColumnInfo(name = "author")
     private String author;
-    //@ColumnInfo(name = "cover")
-    //private String cover;
+    @ColumnInfo(name = "cover")
+    private String cover;
     @ColumnInfo(name = "category")
     private String category;
     /*@ColumnInfo(name = "serie")
@@ -22,10 +22,10 @@ public class Book {
     @ColumnInfo(name = "serie_name")
     private String serieName;*/
 
-    public Book(String title, String author, String category) {
+    public Book(String title, String author, String category, String cover) {
         this.title = title;
         this.author = author;
-        //this.cover = cover;
+        this.cover = cover;
         this.category = category;
         //this.serie = serie;
         //this.serieName = serieName;
@@ -55,14 +55,14 @@ public class Book {
         this.author = author;
     }
 
-   /* public String getCover() {
+   public String getCover() {
         return cover;
     }
 
     public void setCover(String cover) {
         this.cover = cover;
     }
-*/
+
     public String getCategory() {
         return category;
     }

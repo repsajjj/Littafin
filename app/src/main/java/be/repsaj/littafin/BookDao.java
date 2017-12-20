@@ -16,17 +16,12 @@ public interface BookDao {
     @Query("DELETE FROM book")
      void reset();
 
-    /*
-    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
-    List<User> loadAllByIds(int[] userIds);
-
-    @Query("SELECT * FROM user WHERE first_name LIKE :first AND "
-            + "last_name LIKE :last LIMIT 1")
-    User findByName(String first, String last);
-    */
 
     @Query("SELECT * FROM book WHERE title LIKE :title LIMIT 1")
     Book findByTitle(String title);
+
+    @Query("DELETE  FROM book WHERE uid LIKE :uid ")
+    void deleteByUid(int uid);
 
     @Query("SELECT * FROM book WHERE category LIKE :category ")
     Book findByCategory(String category);
@@ -38,5 +33,5 @@ public interface BookDao {
     void insertAll(Book... books);
 
     @Delete
-    void delete(Book user);
+    void delete(Book book);
 }

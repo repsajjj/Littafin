@@ -39,21 +39,6 @@ public class ScanBookActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*
-        setContentView(R.layout.activity_scan_book);
-
-        mResultTextView = (TextView) findViewById(R.id.result_textview);
-
-        Button scanBarcodeButton = (Button) findViewById(R.id.scan_barcode_button);
-        scanBarcodeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), be.repsaj.littafin.barcode.BarcodeCaptureActivity.class);
-                startActivityForResult(intent, BARCODE_READER_REQUEST_CODE);
-            }
-        });
-        */
-
         Intent intent = new Intent(getApplicationContext(), be.repsaj.littafin.barcode.BarcodeCaptureActivity.class);
         startActivityForResult(intent, BARCODE_READER_REQUEST_CODE);
     }
@@ -90,7 +75,7 @@ public class ScanBookActivity extends AppCompatActivity {
                 reader = new BufferedReader(new InputStreamReader(stream));
                 StringBuffer buffer = new StringBuffer();
                 String line = "";
-                String result[] = new String[2];
+                String result[] = new String[3];
 
                 while ((line = reader.readLine()) != null) {
                     buffer.append(line + "\n");
@@ -103,6 +88,13 @@ public class ScanBookActivity extends AppCompatActivity {
                     JSONObject volumeInfo = items.getJSONObject(0).getJSONObject("volumeInfo");
                     JSONArray authors = (volumeInfo.getJSONArray("authors"));
                     JSONArray jsonArray = new JSONArray(authors.toString(0));
+                    try {
+                        JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
+                        result[2] =imageLinks.getString("smallThumbnail");
+                    }
+                    catch(Exception e){
+                        Log.e("SCAN:","No image in the API");
+                    }
 
                     result[0]=volumeInfo.getString("title");
                     result[1]= jsonArray.getString(0);
@@ -138,7 +130,7 @@ public class ScanBookActivity extends AppCompatActivity {
             super.onPostExecute(result);
             Log.e("Title: ",result[0]);
             Log.e("Author: ",result[1]);
-            Book newBook = new Book(result[0], result[1], "");
+            Book newBook = new Book(result[0], result[1], "",result[2]);
             AddBookTask addBookTask = new AddBookTask(newBook);
             addBookTask.execute((Void) null);
             finish();
