@@ -3,22 +3,17 @@ package be.repsaj.littafin;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CategorieActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,9 +61,6 @@ public class CategorieActivity extends AppCompatActivity {
             //on click
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String category = categories.get(position);
-
-                Log.e("Push",category);
-
                 Intent intent = new Intent(CategorieActivity.this, ViewBooksActivity.class);
                 intent.putExtra("sort", "Category");
                 intent.putExtra("category", category);

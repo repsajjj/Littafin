@@ -130,7 +130,7 @@ public class ScanBookActivity extends AppCompatActivity {
             super.onPostExecute(result);
             Log.e("Title: ",result[0]);
             Log.e("Author: ",result[1]);
-            Book newBook = new Book(result[0], result[1], "No category",result[2]);
+            Book newBook = new Book(result[0], result[1], "Unknow",result[2]);
             AddBookTask addBookTask = new AddBookTask(newBook);
             addBookTask.execute((Void) null);
             finish();

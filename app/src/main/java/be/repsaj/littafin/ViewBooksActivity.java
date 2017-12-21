@@ -83,8 +83,8 @@ public class ViewBooksActivity extends AppCompatActivity {
         swipeController = new SwipeController(new SwipeControllerActions() {
             @Override
             public void onRightClicked(int position) {
-                int uId=mAdapter.getUid(position);
-                deleteUid= uId;
+                deleteUid=mAdapter.getUid(position);
+
                 mAdapter.books.remove(position);
 
                 DeleteBookByIdTask deleteBookByIdTask = new DeleteBookByIdTask();

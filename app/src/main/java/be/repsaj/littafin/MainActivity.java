@@ -56,6 +56,8 @@ public class MainActivity extends AppCompatActivity{
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         makeBookDataAdapter();
+
+        //Log.e("Path db",getDatabasePath("BookDB.db").getAbsolutePath()); --> /data/data/be.repsaj.littafin/databases/BookDB.db
     }
 
 

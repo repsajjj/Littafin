@@ -43,20 +43,30 @@
             android:inputType="textPersonName"
             android:textSize="15sp" />
 
-        <TextView
-            android:id="@+id/textView5"
+        <Switch
+            android:id="@+id/swCategory"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Category"
+            android:layout_height="47dp"
+            android:text="New category"
             android:textSize="20sp" />
 
-        <EditText
-            android:id="@+id/editCategory"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:textSize="15sp" />
+            android:layout_height="wrap_content">
+
+            <Spinner
+                android:id="@+id/sEditCategory"
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
+
+            <EditText
+                android:id="@+id/editCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:textSize="15sp" />
+        </RelativeLayout>
 
         <Button
             android:id="@+id/button2"
