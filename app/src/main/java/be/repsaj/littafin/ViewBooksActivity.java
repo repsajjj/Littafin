@@ -3,75 +3,52 @@ package be.repsaj.littafin;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.AsyncTask;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.MenuItem;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity{
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.nav_categories:
-                    startActivity(new Intent(getApplicationContext(),CategorieActivity.class));
-                    return true;
-
-                case R.id.nav_book_scan:
-                    startActivity(new Intent(getApplicationContext(),ScanBookActivity.class));
-                    return true;
-
-                case R.id.nav_book_manual:
-                    startActivity(new Intent(getApplicationContext(),AddBookActivity.class));
-                    return true;
-            }
-            return false;
-        }
-    };
+public class ViewBooksActivity extends AppCompatActivity {
 
     private BookDataAdapter mAdapter;
     private List<Book> books;
-    private int deleteUid;
+    private String category;
+    private Integer deleteUid;
     SwipeController swipeController = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_view_books);
+
+
     }
 
     @Override
     public void onResume(){
         super.onResume();
-        setContentView(R.layout.activity_main);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        Intent intent = getIntent();
 
+        category = intent.getStringExtra("category");
         makeBookDataAdapter();
     }
 
-
-
     private void makeBookDataAdapter(){
-        GetBooksTask getBooksTask = new GetBooksTask();
-        getBooksTask.execute((Void) null);
-
+        GetBooksByCategoryTask getBooksByCategoryTask = new GetBooksByCategoryTask();
+        getBooksByCategoryTask.execute((Void) null);
     }
 
-    public class GetBooksTask extends AsyncTask<Void, Void, List<Book>> {
+
+
+    public class GetBooksByCategoryTask extends AsyncTask<Void, Void, List<Book>> {
 
         @Override
         protected List<Book> doInBackground(Void... voids) {
             List<Book> books = AppDatabase.getInstance(getApplicationContext()).bookDao()
-                    .getAll();
+                    .findByCategory(category);
             return books;
         }
 
@@ -85,7 +62,6 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-
     public class DeleteBookByIdTask extends AsyncTask<Void, Void, Boolean> {
 
         @Override
@@ -95,6 +71,7 @@ public class MainActivity extends AppCompatActivity{
             return true;
         }
     }
+
 
 
     private void setupRecyclerView() {
@@ -126,7 +103,7 @@ public class MainActivity extends AppCompatActivity{
                 intent.putExtra("bookAuthor", tBook.getAuthor());
                 intent.putExtra("bookCategory", tBook.getCategory());
                 startActivity(intent);
-              }
+            }
         });
 
         ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);

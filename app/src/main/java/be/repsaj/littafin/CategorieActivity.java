@@ -65,16 +65,14 @@ public class CategorieActivity extends AppCompatActivity {
 
             //on click
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                 String category = categories.get(position);
 
                 Log.e("Push",category);
 
-                /*
-
                 Intent intent = new Intent(CategorieActivity.this, ViewBooksActivity.class);
+                intent.putExtra("sort", "Category");
                 intent.putExtra("category", category);
-                startActivity(intent);*/
+                startActivity(intent);
             }
         };
         listView.setOnItemClickListener(adapterViewListener);

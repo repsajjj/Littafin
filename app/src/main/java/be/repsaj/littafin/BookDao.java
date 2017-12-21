@@ -24,7 +24,7 @@ public interface BookDao {
     void deleteByUid(int uid);
 
     @Query("SELECT * FROM book WHERE category LIKE :category ")
-    Book findByCategory(String category);
+    List<Book> findByCategory(String category);
 
     @Query("SELECT DISTINCT category FROM book")
     Cursor getAllCategories();

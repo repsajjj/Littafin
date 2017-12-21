@@ -25,7 +25,8 @@
         <activity android:name=".CategorieActivity" />
         <activity android:name=".ScanBookActivity" />
         <activity android:name=".barcode.BarcodeCaptureActivity" />
-        <activity android:name=".EditBookActivity"></activity>
+        <activity android:name=".EditBookActivity" />
+        <activity android:name=".ViewBooksActivity"></activity>
     </application>
 
 </manifest>
