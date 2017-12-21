@@ -1,12 +1,17 @@
 package be.repsaj.littafin;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -51,14 +56,28 @@ public class CategorieActivity extends AppCompatActivity {
         }
     }
 
-    public void printCategoriesList( List<String> categories){
-        ViewGroup linearLayout = findViewById(R.id.layCat);
-        linearLayout.removeAllViews();
-        for (String category : categories) {
-            TextView catTV = new TextView(this);
-            catTV.setText("Category: "+category);
-            linearLayout.addView(catTV);
-        }
+    public void printCategoriesList(final List<String> categories){
+        ArrayAdapter<String> adapter = new CategoryDataAdapter (this, 0, categories);
+        ListView listView = (ListView) findViewById(R.id.listViewCategory);
+        listView.setAdapter(adapter);
+
+        AdapterView.OnItemClickListener adapterViewListener = new AdapterView.OnItemClickListener() {
+
+            //on click
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                String category = categories.get(position);
+
+                Log.e("Push",category);
+
+                /*
+
+                Intent intent = new Intent(CategorieActivity.this, ViewBooksActivity.class);
+                intent.putExtra("category", category);
+                startActivity(intent);*/
+            }
+        };
+        listView.setOnItemClickListener(adapterViewListener);
     }
 
 
