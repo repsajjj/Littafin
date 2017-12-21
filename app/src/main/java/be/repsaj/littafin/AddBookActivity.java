@@ -13,6 +13,7 @@ public class AddBookActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_book);
+        setTitle("Add book");
     }
     public void Add(View view) {
         String title = ((EditText) findViewById(R.id.txtTitle)).getText().toString();

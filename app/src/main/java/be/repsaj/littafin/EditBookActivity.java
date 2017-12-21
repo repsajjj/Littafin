@@ -31,6 +31,7 @@ public class EditBookActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_book);
+        setTitle("Edit book");
 
         editTitle = (TextView)findViewById(R.id.editTitle);
         editAuthor = (TextView)findViewById(R.id.editAuthor);

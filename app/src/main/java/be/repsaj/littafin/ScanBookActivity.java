@@ -27,20 +27,24 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import be.repsaj.littafin.barcode.BarcodeCaptureActivity;
 
 
 public class ScanBookActivity extends AppCompatActivity {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final int BARCODE_READER_REQUEST_CODE = 1;
+    private String category;
 
-    private TextView mResultTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent currentIntent = getIntent();
+        category = currentIntent.getStringExtra("bookCategory");
 
-        Intent intent = new Intent(getApplicationContext(), be.repsaj.littafin.barcode.BarcodeCaptureActivity.class);
-        startActivityForResult(intent, BARCODE_READER_REQUEST_CODE);
+
+        Intent nextIntent = new Intent(getApplicationContext(),BarcodeCaptureActivity.class);
+        startActivityForResult(nextIntent, BARCODE_READER_REQUEST_CODE);
     }
 
     @Override
@@ -48,7 +52,7 @@ public class ScanBookActivity extends AppCompatActivity {
         if (requestCode == BARCODE_READER_REQUEST_CODE) {
             if (resultCode == CommonStatusCodes.SUCCESS) {
                 if (data != null) {
-                    Barcode barcode = data.getParcelableExtra(be.repsaj.littafin.barcode.BarcodeCaptureActivity.BarcodeObject);
+                    Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
                     Point[] p = barcode.cornerPoints;
                     String url = "https://www.googleapis.com/books/v1/volumes?q=isbn:"+barcode.displayValue;
 
@@ -130,10 +134,11 @@ public class ScanBookActivity extends AppCompatActivity {
             super.onPostExecute(result);
             Log.e("Title: ",result[0]);
             Log.e("Author: ",result[1]);
-            Book newBook = new Book(result[0], result[1], "Unknow",result[2]);
+            if(category==null){category="Unknow";}
+            Book newBook = new Book(result[0], result[1], category,result[2]);
             AddBookTask addBookTask = new AddBookTask(newBook);
             addBookTask.execute((Void) null);
-            finish();
+
         }
 
         public class AddBookTask extends AsyncTask<Void, Void, Boolean> {
@@ -155,7 +160,9 @@ public class ScanBookActivity extends AppCompatActivity {
             protected void onPostExecute(final Boolean success) {
                 if (success) {
                     Toast.makeText(getApplicationContext(),"Book successfully inserted", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                    Intent nextIntent = new Intent(getApplicationContext(),BarcodeCaptureActivity.class);
+                    startActivityForResult(nextIntent, BARCODE_READER_REQUEST_CODE);
+
                 } else {
                     Toast.makeText(getApplicationContext(),"Could not insert book", Toast.LENGTH_SHORT).show();
                 }
