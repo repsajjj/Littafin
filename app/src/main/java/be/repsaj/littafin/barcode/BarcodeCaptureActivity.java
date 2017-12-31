@@ -136,6 +136,9 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
                 StringBuffer buffer = new StringBuffer();
                 String line = "";
                 String result[] = new String[3];
+                result[0]="";
+                result[1]="";
+                result[2]="";
 
                 while ((line = reader.readLine()) != null) {
                     buffer.append(line + "\n");
@@ -146,8 +149,15 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
                     JSONObject obj = new JSONObject(buffer.toString());
                     JSONArray items = obj.getJSONArray("items");
                     JSONObject volumeInfo = items.getJSONObject(0).getJSONObject("volumeInfo");
-                    JSONArray authors = (volumeInfo.getJSONArray("authors"));
-                    JSONArray jsonArray = new JSONArray(authors.toString(0));
+                    try {
+                        JSONArray authors = (volumeInfo.getJSONArray("authors"));
+                        JSONArray jsonArray = new JSONArray(authors.toString(0));
+                        result[1]= jsonArray.getString(0);
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
+
                     try {
                         JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
                         result[2] =imageLinks.getString("smallThumbnail");
@@ -157,8 +167,6 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
                     }
 
                     result[0]= volumeInfo.getString("title");
-                    result[1]= jsonArray.getString(0);
-
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -187,8 +195,8 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
         @Override
         protected void onPostExecute(String [] result) {
             super.onPostExecute(result);
-            if(category==null){category="Unknow";}
-            if( (!"".equals(result[0])) && (!"".equals(result[1])) && (!uniqueTitle.equals(result[0])) ) {
+            if(category==null){category="Unknown";}
+            if( (!"".equals(result[0])) && (!uniqueTitle.equals(result[0])) ) {
                 Book newBook = new Book(result[0], result[1], category, result[2]);
                 uniqueTitle = result[0];
                 AddBookTask addBookTask = new AddBookTask(newBook);

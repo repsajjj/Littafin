@@ -1,19 +1,27 @@
 package be.repsaj.littafin;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class AddBookActivity extends AppCompatActivity {
+    String category;
+    TextView addCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_book);
         setTitle("Add book");
+        Intent currentIntent = getIntent();
+        category = currentIntent.getStringExtra("bookCategory");
+        addCategory=(TextView)findViewById(R.id.txtCategory);
+        addCategory.setText(category);
     }
     public void Add(View view) {
         String title = ((EditText) findViewById(R.id.txtTitle)).getText().toString();
