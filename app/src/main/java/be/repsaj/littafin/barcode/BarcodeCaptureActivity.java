@@ -169,6 +169,11 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
                     result[0]= volumeInfo.getString("title");
 
                 } catch (JSONException e) {
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), "Could not find book please insert manually", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                     e.printStackTrace();
                 }
                 return result;
