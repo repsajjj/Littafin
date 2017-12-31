@@ -70,6 +70,7 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
 
     private static final String TAG = "Barcode-reader";
     private String category;
+    private String uniqueTitle="";
 
     // Intent request code to handle updating play services if needed.
     private static final int RC_HANDLE_GMS = 9001;
@@ -155,14 +156,13 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
                         Log.e("SCAN:","No image in the API");
                     }
 
-                    result[0]=volumeInfo.getString("title");
+                    result[0]= volumeInfo.getString("title");
                     result[1]= jsonArray.getString(0);
 
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
                 return result;
 
             } catch (MalformedURLException e) {
@@ -188,10 +188,12 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
         protected void onPostExecute(String [] result) {
             super.onPostExecute(result);
             if(category==null){category="Unknow";}
-            Book newBook = new Book(result[0], result[1], category,result[2]);
-            AddBookTask addBookTask = new AddBookTask(newBook);
-            addBookTask.execute((Void) null);
-
+            if( (!"".equals(result[0])) && (!"".equals(result[1])) && (!uniqueTitle.equals(result[0])) ) {
+                Book newBook = new Book(result[0], result[1], category, result[2]);
+                uniqueTitle = result[0];
+                AddBookTask addBookTask = new AddBookTask(newBook);
+                addBookTask.execute((Void) null);
+            }
         }
 
         public class AddBookTask extends AsyncTask<Void, Void, Boolean> {
