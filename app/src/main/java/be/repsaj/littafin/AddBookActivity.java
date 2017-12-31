@@ -64,25 +64,4 @@ public class AddBookActivity extends AppCompatActivity {
             }
         }
     }
-
-    public void Reset (View view){
-        ResetTask resetTask = new ResetTask();
-        resetTask.execute((Void) null);
-    }
-
-    public class ResetTask extends AsyncTask<Void, Void, Boolean> {
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            AppDatabase.getInstance(getApplicationContext()).bookDao()
-                    .reset();
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            if (success) {
-                Toast.makeText(getApplicationContext(),"Clean dB", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
 }
