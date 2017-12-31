@@ -41,7 +41,6 @@ public class ScanBookActivity extends AppCompatActivity {
         Intent currentIntent = getIntent();
         category = currentIntent.getStringExtra("bookCategory");
 
-
         Intent nextIntent = new Intent(getApplicationContext(),BarcodeCaptureActivity.class);
         startActivityForResult(nextIntent, BARCODE_READER_REQUEST_CODE);
     }
@@ -72,7 +71,6 @@ public class ScanBookActivity extends AppCompatActivity {
                 URL url = new URL(params[0]);
                 connection = (HttpURLConnection) url.openConnection();
                 connection.connect();
-
 
                 InputStream stream = connection.getInputStream();
                 reader = new BufferedReader(new InputStreamReader(stream));
@@ -106,7 +104,6 @@ public class ScanBookActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
                 return result;
 
             } catch (MalformedURLException e) {
@@ -131,13 +128,10 @@ public class ScanBookActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String [] result) {
             super.onPostExecute(result);
-            Log.e("Title: ",result[0]);
-            Log.e("Author: ",result[1]);
             if(category==null){category="Unknow";}
             Book newBook = new Book(result[0], result[1], category,result[2]);
             AddBookTask addBookTask = new AddBookTask(newBook);
             addBookTask.execute((Void) null);
-
         }
 
         public class AddBookTask extends AsyncTask<Void, Void, Boolean> {

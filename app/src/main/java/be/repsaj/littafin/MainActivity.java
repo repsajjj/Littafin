@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity{
     public void onResume(){
         super.onResume();
         setContentView(R.layout.activity_main);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         makeBookDataAdapter();
@@ -88,7 +88,6 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-
     public class DeleteBookByIdTask extends AsyncTask<Void, Void, Boolean> {
 
         @Override
@@ -101,7 +100,7 @@ public class MainActivity extends AppCompatActivity{
 
 
     private void setupRecyclerView() {
-        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(mAdapter);

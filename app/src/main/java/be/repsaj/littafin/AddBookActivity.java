@@ -18,6 +18,7 @@ public class AddBookActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_book);
         setTitle("Add book");
+
         Intent currentIntent = getIntent();
         category = currentIntent.getStringExtra("bookCategory");
         addCategory=(TextView)findViewById(R.id.txtCategory);

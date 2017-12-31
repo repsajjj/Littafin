@@ -131,7 +131,6 @@ public class EditBookActivity extends AppCompatActivity {
             cCategories = AppDatabase.getInstance(getApplicationContext()).bookDao()
                     .getAllCategories();
             while(cCategories.moveToNext()) {
-
                 sCategories.add(cCategories.getString(0));
             }
             cCategories.close();
@@ -152,13 +151,6 @@ public class EditBookActivity extends AppCompatActivity {
         int spinnerPosition = dataAdapter.getPosition(bookCategory);
         sEditCategory.setAdapter(dataAdapter);
         sEditCategory.setSelection(spinnerPosition);
-
-
-
-
-
-
-
     }
 
 }

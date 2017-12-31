@@ -17,18 +17,12 @@ public class Book {
     private String cover;
     @ColumnInfo(name = "category")
     private String category;
-    /*@ColumnInfo(name = "serie")
-    private Boolean serie;
-    @ColumnInfo(name = "serie_name")
-    private String serieName;*/
 
     public Book(String title, String author, String category, String cover) {
         this.title = title;
         this.author = author;
         this.cover = cover;
         this.category = category;
-        //this.serie = serie;
-        //this.serieName = serieName;
     }
 
     public int getUid() {
@@ -70,20 +64,4 @@ public class Book {
     public void setCategory(String category) {
         this.category = category;
     }
-
-    /*public Boolean getSerie() {
-        return serie;
-    }
-
-    public void setSerie(Boolean serie) {
-        this.serie = serie;
-    }
-
-    public String getSerieName() {
-        return serieName;
-    }
-
-    public void setSerieName(String serieName) {
-        this.serieName = serieName;
-    }*/
 }

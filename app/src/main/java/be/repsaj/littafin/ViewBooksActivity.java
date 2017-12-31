@@ -53,7 +53,7 @@ public class ViewBooksActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_books);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.categoryNavigation);
+        BottomNavigationView navigation = findViewById(R.id.categoryNavigation);
         navigation.setOnNavigationItemSelectedListener(OnNavigationCategoryItemSelectedListener);
 
 
@@ -104,7 +104,6 @@ public class ViewBooksActivity extends AppCompatActivity {
             return true;
         }
     }
-
 
 
     private void setupRecyclerView() {
