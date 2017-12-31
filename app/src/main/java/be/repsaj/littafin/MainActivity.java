@@ -10,10 +10,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 
 import java.util.List;
+
+import be.repsaj.littafin.barcode.BarcodeCaptureActivity;
 
 public class MainActivity extends AppCompatActivity{
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity{
                     return true;
 
                 case R.id.nav_book_scan:
-                    startActivity(new Intent(getApplicationContext(),ScanBookActivity.class));
+                    startActivity(new Intent(getApplicationContext(),BarcodeCaptureActivity.class));
                     return true;
 
                 case R.id.nav_book_manual:

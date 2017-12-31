@@ -27,7 +27,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Point;
 import android.hardware.Camera;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -44,16 +46,30 @@ import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import be.repsaj.littafin.AddBookActivity;
+import be.repsaj.littafin.AppDatabase;
+import be.repsaj.littafin.Book;
 import be.repsaj.littafin.R;
 import be.repsaj.littafin.camera.CameraSource;
 import be.repsaj.littafin.camera.CameraSourcePreview;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public final class BarcodeCaptureActivity extends AppCompatActivity
         implements BarcodeTracker.BarcodeGraphicTrackerCallback {
 
     private static final String TAG = "Barcode-reader";
+    private String category;
 
     // Intent request code to handle updating play services if needed.
     private static final int RC_HANDLE_GMS = 9001;
@@ -80,6 +96,9 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
         boolean autoFocus = true;
         boolean useFlash = false;
 
+        Intent currentIntent = getIntent();
+        category = currentIntent.getStringExtra("bookCategory");
+
         // Check for the camera permission before accessing the camera.  If the
         // permission is not granted yet, request permission.
         int rc = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
@@ -93,10 +112,112 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
     @Override
     public void onDetectedQrCode(Barcode barcode) {
         if (barcode != null) {
-            Intent intent = new Intent();
-            intent.putExtra(BarcodeObject, barcode);
-            setResult(CommonStatusCodes.SUCCESS, intent);
-            finish();
+            Point[] p = barcode.cornerPoints;
+            String url = "https://www.googleapis.com/books/v1/volumes?q=isbn:"+barcode.displayValue;
+            new JsonTask().execute(url);
+        }
+    }
+
+    private class JsonTask extends AsyncTask<String, String, String []> {
+        protected String[] doInBackground(String... params) {
+            HttpURLConnection connection = null;
+            BufferedReader reader = null;
+
+            try {
+                Log.e("URL", params[0]);
+                URL url = new URL(params[0]);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.connect();
+
+
+                InputStream stream = connection.getInputStream();
+                reader = new BufferedReader(new InputStreamReader(stream));
+                StringBuffer buffer = new StringBuffer();
+                String line = "";
+                String result[] = new String[3];
+
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line + "\n");
+                    Log.d("Response: ", "> " + line);
+
+                }
+                try {
+                    JSONObject obj = new JSONObject(buffer.toString());
+                    JSONArray items = obj.getJSONArray("items");
+                    JSONObject volumeInfo = items.getJSONObject(0).getJSONObject("volumeInfo");
+                    JSONArray authors = (volumeInfo.getJSONArray("authors"));
+                    JSONArray jsonArray = new JSONArray(authors.toString(0));
+                    try {
+                        JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
+                        result[2] =imageLinks.getString("smallThumbnail");
+                    }
+                    catch(Exception e){
+                        Log.e("SCAN:","No image in the API");
+                    }
+
+                    result[0]=volumeInfo.getString("title");
+                    result[1]= jsonArray.getString(0);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                return result;
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+                try {
+                    if (reader != null) {
+                        reader.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String [] result) {
+            super.onPostExecute(result);
+            if(category==null){category="Unknow";}
+            Book newBook = new Book(result[0], result[1], category,result[2]);
+            AddBookTask addBookTask = new AddBookTask(newBook);
+            addBookTask.execute((Void) null);
+
+        }
+
+        public class AddBookTask extends AsyncTask<Void, Void, Boolean> {
+
+            private final Book newBook;
+
+            AddBookTask(Book newBook) {
+                this.newBook = newBook;
+            }
+
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                AppDatabase.getInstance(getApplicationContext()).bookDao()
+                        .insertAll(newBook);
+                return true;
+            }
+
+            @Override
+            protected void onPostExecute(final Boolean success) {
+                if (success) {
+                    Toast.makeText(getApplicationContext(),"Book successfully inserted", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    Toast.makeText(getApplicationContext(),"Could not insert book", Toast.LENGTH_SHORT).show();
+                }
+            }
         }
     }
 

@@ -14,6 +14,8 @@ import android.view.MenuItem;
 
 import java.util.List;
 
+import be.repsaj.littafin.barcode.BarcodeCaptureActivity;
+
 public class ViewBooksActivity extends AppCompatActivity {
     private BookDataAdapter mAdapter;
     private List<Book> books;
@@ -28,7 +30,7 @@ public class ViewBooksActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.nav_book_scan:
-                    Intent scanBook = new Intent(getApplicationContext(),ScanBookActivity.class);
+                    Intent scanBook = new Intent(getApplicationContext(),BarcodeCaptureActivity.class);
                     scanBook.putExtra("bookCategory", category);
                     startActivity(scanBook);
                     return true;

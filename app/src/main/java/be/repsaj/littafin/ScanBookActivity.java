@@ -35,7 +35,6 @@ public class ScanBookActivity extends AppCompatActivity {
     private static final int BARCODE_READER_REQUEST_CODE = 1;
     private String category;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
