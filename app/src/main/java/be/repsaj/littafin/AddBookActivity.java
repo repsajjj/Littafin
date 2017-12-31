@@ -28,10 +28,15 @@ public class AddBookActivity extends AppCompatActivity {
         String author = ((EditText) findViewById(R.id.txtAuthor)).getText().toString();
         String category = ((EditText) findViewById(R.id.txtCategory)).getText().toString();
         String cover ="";
-
-        Book newBook = new Book(title, author, category, cover);
-        AddBookTask addBookTask = new AddBookTask(newBook);
-        addBookTask.execute((Void) null);
+        if (!"".equals(title)) {
+            if("".equals(category)){category="Unknown";};
+            Book newBook = new Book(title, author, category, cover);
+            AddBookTask addBookTask = new AddBookTask(newBook);
+            addBookTask.execute((Void) null);
+        }
+        else {
+            Toast.makeText(getApplicationContext(),":( This book have no name. \n Fill in the title please.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public class AddBookTask extends AsyncTask<Void, Void, Boolean> {
@@ -59,7 +64,6 @@ public class AddBookActivity extends AppCompatActivity {
             }
         }
     }
-
 
     public void Reset (View view){
         ResetTask resetTask = new ResetTask();
