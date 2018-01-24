@@ -12,6 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.MenuItem;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import be.repsaj.littafin.barcode.BarcodeCaptureActivity;
@@ -89,6 +91,11 @@ public class ViewBooksActivity extends AppCompatActivity {
         protected void onPostExecute(final List<Book> tBooks) {
             books=tBooks;
             if (books != null) {
+                Collections.sort(books, new Comparator<Book>() {
+                    public int compare(Book b1, Book b2) {
+                        return b1.getTitle().compareTo(b2.getTitle());
+                    }
+                });
                 mAdapter = new BookDataAdapter(books);
                 setupRecyclerView();
             }

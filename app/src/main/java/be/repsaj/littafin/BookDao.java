@@ -16,7 +16,6 @@ public interface BookDao {
     @Query("DELETE FROM book")
      void reset();
 
-
     @Query("SELECT * FROM book WHERE title LIKE :title LIMIT 1")
     Book findByTitle(String title);
 
@@ -28,7 +27,6 @@ public interface BookDao {
 
     @Query("SELECT DISTINCT category FROM book")
     Cursor getAllCategories();
-
 
     @Query("UPDATE book SET title = :title, author = :author, category = :category WHERE uid LIKE :uid")
     void update(int uid,String title,String author,String category);
