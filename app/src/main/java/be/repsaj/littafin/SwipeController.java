@@ -168,7 +168,7 @@ public class SwipeController extends Callback {
         RectF leftButton = new RectF(itemView.getLeft(), itemView.getTop(), itemView.getLeft() + buttonWidthWithoutPadding, itemView.getBottom());
         p.setColor(Color.rgb(31,142,239));
         c.drawRoundRect(leftButton, corners, corners, p);
-        Bitmap bmpLeft = getBitmapFromDrawable(mContext, R.drawable.ic_edit_black_48dp);
+        Bitmap bmpLeft = getBitmapFromDrawable(mContext, R.drawable.ic_edit_black_75dp);
         float spaceHeightLeft = 0;
         float combinedHeightLeft = bmpLeft.getHeight() + spaceHeightLeft + leftButton.height();
         c.drawBitmap(bmpLeft, leftButton.centerX() - (bmpLeft.getWidth() / 2), leftButton.centerY() - (combinedHeightLeft / 6), null);
@@ -176,7 +176,7 @@ public class SwipeController extends Callback {
         RectF rightButton = new RectF(itemView.getRight() - buttonWidthWithoutPadding, itemView.getTop(), itemView.getRight(), itemView.getBottom());
         p.setColor(Color.rgb(239,31,31));
         c.drawRoundRect(rightButton, corners, corners, p);
-        Bitmap bmpRight = getBitmapFromDrawable(mContext, R.drawable.ic_delete_black_48dp);
+        Bitmap bmpRight = getBitmapFromDrawable(mContext, R.drawable.ic_delete_black_75dp);
         float spaceHeightRight = 0;
         float combinedHeightRight = bmpRight.getHeight() + spaceHeightRight + rightButton.height();
         c.drawBitmap(bmpRight, rightButton.centerX() - (bmpRight.getWidth() / 2), rightButton.centerY() - (combinedHeightRight / 6), null);
