@@ -12,7 +12,7 @@ import java.util.List;
 public interface BookDao {
     @Query("SELECT * FROM book")
     List<Book> getAll();
-    
+
     @Query("DELETE  FROM book WHERE uid LIKE :uid ")
     void deleteByUid(int uid);
 

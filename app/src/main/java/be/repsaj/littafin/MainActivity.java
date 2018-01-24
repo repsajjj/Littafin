@@ -1,5 +1,6 @@
 package be.repsaj.littafin;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.AsyncTask;
@@ -44,11 +45,17 @@ public class MainActivity extends AppCompatActivity{
     private BookDataAdapter mAdapter;
     private List<Book> books;
     private int deleteUid;
+    private static Context mContext;
     SwipeController swipeController = null;
+
+    public static Context getContext(){
+        return mContext;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = this;
     }
 
     @Override

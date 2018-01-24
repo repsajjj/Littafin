@@ -1,13 +1,23 @@
 package be.repsaj.littafin;
 
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.VectorDrawable;
+import android.support.annotation.DrawableRes;
+import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper.Callback;
 import android.view.MotionEvent;
 import android.view.View;
+
+import be.repsaj.littafin.MainActivity;
 
 import static android.support.v7.widget.helper.ItemTouchHelper.*;
 
@@ -17,7 +27,7 @@ enum ButtonsState {
     RIGHT_VISIBLE
 }
 
-class SwipeController extends Callback {
+public class SwipeController extends Callback {
 
     private boolean swipeBack = false;
 
@@ -153,15 +163,24 @@ class SwipeController extends Callback {
         View itemView = viewHolder.itemView;
         Paint p = new Paint();
 
+        Context mContext = MainActivity.getContext();
+
         RectF leftButton = new RectF(itemView.getLeft(), itemView.getTop(), itemView.getLeft() + buttonWidthWithoutPadding, itemView.getBottom());
-        p.setColor(Color.BLUE);
+        p.setColor(Color.rgb(31,142,239));
         c.drawRoundRect(leftButton, corners, corners, p);
-        drawText("EDIT", c, leftButton, p);
+        Bitmap bmpLeft = getBitmapFromDrawable(mContext, R.drawable.ic_edit_black_48dp);
+        float spaceHeightLeft = 0;
+        float combinedHeightLeft = bmpLeft.getHeight() + spaceHeightLeft + leftButton.height();
+        c.drawBitmap(bmpLeft, leftButton.centerX() - (bmpLeft.getWidth() / 2), leftButton.centerY() - (combinedHeightLeft / 6), null);
 
         RectF rightButton = new RectF(itemView.getRight() - buttonWidthWithoutPadding, itemView.getTop(), itemView.getRight(), itemView.getBottom());
-        p.setColor(Color.RED);
+        p.setColor(Color.rgb(239,31,31));
         c.drawRoundRect(rightButton, corners, corners, p);
-        drawText("DELETE", c, rightButton, p);
+        Bitmap bmpRight = getBitmapFromDrawable(mContext, R.drawable.ic_delete_black_48dp);
+        float spaceHeightRight = 0;
+        float combinedHeightRight = bmpRight.getHeight() + spaceHeightRight + rightButton.height();
+        c.drawBitmap(bmpRight, rightButton.centerX() - (bmpRight.getWidth() / 2), rightButton.centerY() - (combinedHeightRight / 6), null);
+        //drawText("Delete", c, rightButton, p);
 
         buttonInstance = null;
         if (buttonShowedState == ButtonsState.LEFT_VISIBLE) {
@@ -169,6 +188,23 @@ class SwipeController extends Callback {
         }
         else if (buttonShowedState == ButtonsState.RIGHT_VISIBLE) {
             buttonInstance = rightButton;
+        }
+    }
+
+    public static Bitmap getBitmapFromDrawable(Context context, @DrawableRes int drawableId) {
+        Drawable drawable = ContextCompat.getDrawable(context, drawableId);
+
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable) drawable).getBitmap();
+        } else if (drawable instanceof VectorDrawableCompat || drawable instanceof VectorDrawable) {
+            Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            drawable.draw(canvas);
+
+            return bitmap;
+        } else {
+            throw new IllegalArgumentException("unsupported drawable type");
         }
     }
 
