@@ -12,13 +12,7 @@ import java.util.List;
 public interface BookDao {
     @Query("SELECT * FROM book")
     List<Book> getAll();
-
-    @Query("DELETE FROM book")
-     void reset();
-
-    @Query("SELECT * FROM book WHERE title LIKE :title LIMIT 1")
-    Book findByTitle(String title);
-
+    
     @Query("DELETE  FROM book WHERE uid LIKE :uid ")
     void deleteByUid(int uid);
 
@@ -27,6 +21,9 @@ public interface BookDao {
 
     @Query("SELECT DISTINCT category FROM book")
     Cursor getAllCategories();
+
+    @Query("SELECT COUNT(*) FROM book WHERE title LIKE :title AND author LIKE :author")
+    int countByTitleAuthor(String title, String author);
 
     @Query("UPDATE book SET title = :title, author = :author, category = :category WHERE uid LIKE :uid")
     void update(int uid,String title,String author,String category);

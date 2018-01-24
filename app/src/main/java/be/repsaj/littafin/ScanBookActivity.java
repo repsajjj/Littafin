@@ -130,8 +130,37 @@ public class ScanBookActivity extends AppCompatActivity {
             super.onPostExecute(result);
             if(category==null){category="Unknow";}
             Book newBook = new Book(result[0], result[1], category,result[2]);
-            AddBookTask addBookTask = new AddBookTask(newBook);
-            addBookTask.execute((Void) null);
+            CheckIfBookExist checkIfBookExist = new CheckIfBookExist(newBook);
+            checkIfBookExist.execute((Void) null);
+        }
+
+        public class CheckIfBookExist extends AsyncTask<Void, Void, Integer> {
+
+            private final Book newBook;
+
+
+            CheckIfBookExist(Book newBook) {
+                this.newBook = newBook;
+            }
+
+            @Override
+            protected Integer doInBackground(Void... params) {
+                Integer count;
+               count= AppDatabase.getInstance(getApplicationContext()).bookDao()
+                       .countByTitleAuthor(newBook.getTitle(),newBook.getAuthor());
+                return count;
+            }
+
+            @Override
+            protected void onPostExecute(final Integer count) {
+                if (count == 0) {
+                    AddBookTask addBookTask = new AddBookTask(newBook);
+                    addBookTask.execute((Void) null);
+
+                } else {
+                    Toast.makeText(getApplicationContext(),"Book already inserted!", Toast.LENGTH_SHORT).show();
+                }
+            }
         }
 
         public class AddBookTask extends AsyncTask<Void, Void, Boolean> {

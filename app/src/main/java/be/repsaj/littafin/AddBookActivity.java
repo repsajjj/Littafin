@@ -32,11 +32,41 @@ public class AddBookActivity extends AppCompatActivity {
         if (!"".equals(title)) {
             if("".equals(category)){category="Unknown";};
             Book newBook = new Book(title, author, category, cover);
-            AddBookTask addBookTask = new AddBookTask(newBook);
-            addBookTask.execute((Void) null);
+            CheckIfBookExist checkIfBookExist = new CheckIfBookExist(newBook);
+            checkIfBookExist.execute((Void) null);
         }
         else {
             Toast.makeText(getApplicationContext(),":( This book have no name. \n Fill in the title please.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    public class CheckIfBookExist extends AsyncTask<Void, Void, Integer> {
+
+        private final Book newBook;
+
+
+        CheckIfBookExist(Book newBook) {
+            this.newBook = newBook;
+        }
+
+        @Override
+        protected Integer doInBackground(Void... params) {
+            Integer count;
+            count= AppDatabase.getInstance(getApplicationContext()).bookDao()
+                    .countByTitleAuthor(newBook.getTitle(),newBook.getAuthor());
+            return count;
+        }
+
+        @Override
+        protected void onPostExecute(final Integer count) {
+            if (count == 0) {
+                AddBookTask addBookTask = new AddBookTask(newBook);
+                addBookTask.execute((Void) null);
+
+            } else {
+                Toast.makeText(getApplicationContext(),"Book already inserted!", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
