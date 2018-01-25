@@ -204,8 +204,37 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
             if( (!"".equals(result[0])) && (!uniqueTitle.equals(result[0])) ) {
                 Book newBook = new Book(result[0], result[1], category, result[2]);
                 uniqueTitle = result[0];
-                AddBookTask addBookTask = new AddBookTask(newBook);
-                addBookTask.execute((Void) null);
+                CheckIfBookExist checkIfBookExist = new CheckIfBookExist(newBook);
+                checkIfBookExist.execute((Void) null);
+            }
+        }
+
+        public class CheckIfBookExist extends AsyncTask<Void, Void, Integer> {
+
+            private final Book newBook;
+
+
+            CheckIfBookExist(Book newBook) {
+                this.newBook = newBook;
+            }
+
+            @Override
+            protected Integer doInBackground(Void... params) {
+                Integer count;
+                count= AppDatabase.getInstance(getApplicationContext()).bookDao()
+                        .countByTitleAuthor(newBook.getTitle(),newBook.getAuthor());
+                return count;
+            }
+
+            @Override
+            protected void onPostExecute(final Integer count) {
+                if (count == 0) {
+                    AddBookTask addBookTask = new AddBookTask(newBook);
+                    addBookTask.execute((Void) null);
+
+                } else {
+                    Toast.makeText(getApplicationContext(),"Book already scanned!", Toast.LENGTH_SHORT).show();
+                }
             }
         }
 
