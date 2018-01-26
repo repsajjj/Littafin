@@ -17,7 +17,7 @@ This app make it possible to store all your books by scanning the barcode
     Menu > Settings > Security > and check Unknown Sources to allow your phone to install apps
 
 ## Shipping change
-If you find a bug please report it to: <jasper.vercnocke@student.vives.be>
+If you find a bug please report it to: <repsaj@hotmail.be>
 
 ## License & author info
         Copyright (c) 2018 Jasper Vercnocke
