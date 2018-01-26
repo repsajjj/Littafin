@@ -8,7 +8,7 @@ This app make it possible to store all your books by scanning the barcode
 - Android phone with Android 5.0
 
 ## Run the program
-1. Copy the apk file (Littafin\app\build\outputs\apk\debug) to your Android phone
+1. Copy the apk file to your Android phone
 2. Open the apk file on your Android phone en install
 3. Open the app
 
